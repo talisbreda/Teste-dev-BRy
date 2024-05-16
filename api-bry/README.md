@@ -1,5 +1,3 @@
-This repository contains the API and Web Client for the test for a Software Developer position at BRy.
-
 # API
 The API is located inside the api-bry/ folder. It is made with Java and Spring Boot, using a PostgreSQL database. It can be executed either in Docker or locally, depending on preference. Note that the two ways use two different databases, hence the data inserted in a Docker-run instance will be accessed by a locally-run instance.
 
@@ -29,17 +27,3 @@ The API is located inside the api-bry/ folder. It is made with Java and Spring B
   - [Local] Run `mvn spring-boot:run`
 - The API will be running on `http://localhost:8080`
 - If running with Docker, the database will be running on port 5433
-
-# Client
-The client is located inside the client-bry/ folder. It is made with Angular and uses Axios to communicate with the API.
-
-## Requirements
-- Node.js
-- Angular CLI
-
-## Execution
-- Access the client-bry/ folder
-- Run the command `npm install`
-  - This will install all the dependencies needed to run the application
-- Run the command `ng serve`
-  - This will start the client on `http://localhost:4200`
