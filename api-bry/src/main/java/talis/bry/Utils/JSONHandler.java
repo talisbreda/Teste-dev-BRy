@@ -11,6 +11,8 @@ public class JSONHandler {
 
     private static final String userInsertionSchemaPath = "jsonSchemas/UserInsertionJsonSchema.json";
     private static final String userUpdateSchemaPath = "jsonSchemas/UserUpdateJsonSchema.json";
+    private static final String multipleUserInsertionSchemaPath = "jsonSchemas/MultipleUserInsertionJsonSchema.json";
+    private static final String multipleUserUpdateSchemaPath = "jsonSchemas/MultipleUserUpdateJsonSchema.json";
 
     public static void validateUserInsertionJson(String userJson) throws IllegalArgumentException {
         JsonSchemaValidator jsonSchemaValidator = getSchema(userInsertionSchemaPath);
@@ -36,6 +38,20 @@ public class JSONHandler {
         }
         if (!jsonSchemaValidator.matches(userJson)) {
             throw new IllegalArgumentException("Invalid JSON");
+        }
+    }
+
+    public static void validateMultipleUserInsertionJson(String userJson) throws IllegalArgumentException {
+        JsonSchemaValidator jsonSchemaValidator = getSchema(multipleUserInsertionSchemaPath);
+        if (!jsonSchemaValidator.matches(userJson)) {
+            throw new IllegalArgumentException("Multiple User Insertion JSON is invalid");
+        }
+    }
+
+    public static void validateMultipleUserUpdateJson(String userJson) throws IllegalArgumentException {
+        JsonSchemaValidator jsonSchemaValidator = getSchema(multipleUserUpdateSchemaPath);
+        if (!jsonSchemaValidator.matches(userJson)) {
+            throw new IllegalArgumentException("Multiple User Update JSON is invalid");
         }
     }
 
