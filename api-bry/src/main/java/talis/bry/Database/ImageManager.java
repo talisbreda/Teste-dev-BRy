@@ -33,7 +33,7 @@ public class ImageManager {
         try (Connection conn = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection()) {
             conn.setAutoCommit(false);
 
-            // Store the photo in pg_largeobject
+            // Create a new large object
             long oid = 0;
             PreparedStatement psCreate = conn.prepareStatement("SELECT lo_create(0)");
             ResultSet rsCreate = psCreate.executeQuery();
@@ -42,6 +42,7 @@ public class ImageManager {
             }
 
 
+            // Open the large object for writing
             PreparedStatement psOpen = conn.prepareStatement("SELECT lo_open(?, 131072)"); // 131072 is INV_WRITE
             psOpen.setLong(1, oid);
             ResultSet rsOpen = psOpen.executeQuery();
@@ -70,6 +71,7 @@ public class ImageManager {
 
             byte[] imageData;
 
+            // Open the large object for reading
             PGConnection pgConnection = conn.unwrap(org.postgresql.PGConnection.class);
             LargeObjectManager largeObjectManager = pgConnection.getLargeObjectAPI();
             try (LargeObject largeObject = largeObjectManager.open(photoOid, LargeObjectManager.READ)) {

@@ -77,9 +77,12 @@ public class CPFHandler {
 
     public static String anonymize(String cpf) {
         String cleanCpf = clean(cpf);
+
+        // 123.456.789-09 -> XXX.456.789-XX
         return "XXX." + cleanCpf.substring(3, 6) + "." + cleanCpf.substring(6, 9) + "-XX";
     }
 
+    // Removes dots and hyphens from the CPF
     public static String clean(String cpf) {
         return cpf.replaceAll("[.-]", "");
     }
