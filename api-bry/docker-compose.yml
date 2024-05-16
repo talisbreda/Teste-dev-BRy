@@ -1,0 +1,25 @@
+services:
+  api:
+    image: 'docker-spring-boot-postgres:latest'
+    build:
+      context: .
+    container_name: bry-api
+    depends_on:
+      - db
+    environment:
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/bry
+        - SPRING_DATASOURCE_USERNAME=talis
+        - SPRING_DATASOURCE_PASSWORD=talis-bry
+        - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+        - "8080:8080"
+
+  db:
+    image: 'postgres:latest'
+    container_name: bry-db
+    environment:
+      POSTGRES_USER: talis
+      POSTGRES_PASSWORD: talis-bry
+      POSTGRES_DB: bry
+    ports:
+      - "5432:5432"
