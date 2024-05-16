@@ -4,13 +4,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.*;
+import talis.bry.Async.InsertionMultiStatusResponse;
+import talis.bry.Async.UpdateMultiStatusResponse;
 import talis.bry.Database.Classes.User;
 import talis.bry.Database.ImageManager;
 import talis.bry.Database.repositories.UserRepository;
-import talis.bry.Services.UserInsertionService;
+import talis.bry.Services.UserService;
 import talis.bry.Utils.CPFHandler;
 
 import java.io.IOException;
@@ -44,13 +48,14 @@ public class UserController {
             for (User user : users) {
                 usersArray.put(user.toJson());
             }
+
+            return ResponseEntity.ok(usersArray.toString());
         } catch (JSONException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
 
-        return ResponseEntity.ok(usersArray.toString());
     }
 
     @GetMapping("/user/cpf/{cpf}")
@@ -62,7 +67,7 @@ public class UserController {
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
             }
-            JSONObject userJson = getUserJsonWithPhoto(user);
+            JSONObject userJson = userService.getUserJsonWithPhoto(user);
             return ResponseEntity.ok(userJson.toString());
 
         } catch (NoSuchAlgorithmException | SQLException e) {
@@ -80,7 +85,7 @@ public class UserController {
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
             }
-            JSONObject userJson = getUserJsonWithPhoto(user);
+            JSONObject userJson = userService.getUserJsonWithPhoto(user);
             return ResponseEntity.ok(userJson.toString());
 
         } catch (SQLException e) {
@@ -94,27 +99,29 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody String userJson) {
         try {
-            userInsertionService.insertUser(userJson);
+            userService.insertUser(userJson);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body("User successfully registered!");
         } catch (NoSuchAlgorithmException | IOException | SQLException e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body(e.getMessage());
         } catch (IllegalArgumentException | JSONException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body("User successfully registered!");
     }
 
     @PutMapping("/user/id/{id}")
     public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody String userJson) {
         try {
-            userInsertionService.updateUser(id, userJson);
+            userService.updateUser(id, userJson);
+
+            return ResponseEntity.ok("User successfully updated!");
         } catch (NoSuchAlgorithmException | IOException | SQLException e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body(e.getMessage());
         } catch (IllegalArgumentException | JSONException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok("User successfully updated!");
     }
 
     @DeleteMapping("/user/id/{id}")
@@ -126,19 +133,48 @@ public class UserController {
             }
             imageManager.deleteImage(user.getPhotoOID());
             userRepository.delete(user);
+
+            return ResponseEntity.ok("User successfully deleted!");
         } catch (SQLException e) {
             return ResponseEntity.internalServerError().body("There was an error while deleting the image");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok("User successfully deleted!");
     }
 
-    public JSONObject getUserJsonWithPhoto(User user) throws JSONException, SQLException, IllegalArgumentException{        Long imageOID = user.getPhotoOID();
-        String base64Image = imageManager.getUserImageFromOID(imageOID);
+    @PostMapping("/registerMultipleUsers")
+    public ResponseEntity<String> registerMultipleUsers(@RequestBody String usersJson) {
+        try {
+            InsertionMultiStatusResponse insertionMultiStatusResponse = userService.insertMultipleUsers(usersJson).get();
+            String response = userService.ConvertToJSON(insertionMultiStatusResponse);
 
-        JSONObject userJson = user.toJson();
-        userJson.put("photo", base64Image);
-        return userJson;
+            return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(response);
+        } catch (NoSuchAlgorithmException | IOException | SQLException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        } catch (IllegalArgumentException | JSONException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("There was an error while inserting the users: " + e.getMessage());
+        }
     }
+
+    @PutMapping("/updateMultipleUsers")
+    public ResponseEntity<String> updateMultipleUsers(@RequestBody String usersJson) {
+        try {
+            UpdateMultiStatusResponse insertionMultiStatusResponse = userService.updateMultipleUsers(usersJson).get();
+            String response = userService.ConvertToJSON(insertionMultiStatusResponse);
+
+            return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(response);
+        } catch (NoSuchAlgorithmException | IOException | SQLException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        } catch (IllegalArgumentException | JSONException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("There was an error while updating the users: " + e.getMessage());
+        }
+    }
+
+
 }
