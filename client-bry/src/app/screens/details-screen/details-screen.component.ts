@@ -93,7 +93,6 @@ export class DetailsScreenComponent {
       nameInput.disabled = true;
       this.titleText = 'User Details';
     }).catch(error => {
-      console.log(error);
       feedbackMessageParagraph.innerHTML = 'Error updating user: ' + error.response.data;
       feedbackMessageParagraph.style.color = 'red';
     });

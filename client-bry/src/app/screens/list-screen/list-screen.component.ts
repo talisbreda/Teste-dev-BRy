@@ -24,7 +24,6 @@ export class ListScreenComponent {
   }
 
   ngOnInit() {
-    console.log('call');
     axios.get("http://localhost:8080/users").then((response) => {
       this.users = response.data;
       this.filteredUsers = this.users;

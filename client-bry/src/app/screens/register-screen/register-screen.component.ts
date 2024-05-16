@@ -80,7 +80,6 @@ export class RegisterScreenComponent {
         }
       }
     ).catch((error) => {
-      console.log(error);
       returnMessageElement!.innerText = 'Error registering user: ' + error.response.data;
       returnMessageElement!.style.color = 'red';
     });
