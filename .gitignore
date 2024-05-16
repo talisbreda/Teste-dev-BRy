@@ -1,0 +1,49 @@
+/api-bry/.idea/
+/api-bry/*.iml
+/api-bry/*.iws
+/api-bry/*.ipr
+
+/api-bry/HELP.md
+/api-bry/target/
+/api-bry/.mvn/wrapper/maven-wrapper.jar
+/api-bry/**/src/main/**/target/
+/api-bry/**/src/test/**/target/
+
+/client-bry/package-lock.json
+
+# Compiled output
+/client-bry/dist
+/client-bry/tmp
+/client-bry/out-tsc
+/client-bry/bazel-out
+
+# Node
+/client-bry/node_modules
+/client-bry/npm-debug.log
+/client-bry/yarn-error.log
+
+# IDEs and editors
+/client-bry/.idea/
+/client-bry/.project
+/client-bry/.classpath
+/client-bry/.c9/
+/client-bry/*.launch
+/client-bry/.settings/
+/client-bry/*.sublime-workspace
+
+# Visual Studio Code
+/client-bry/.vscode/
+/client-bry/.history/*
+
+# Miscellaneous
+/client-bry/.angular/cache
+/client-bry/.sass-cache/
+/client-bry/connect.lock
+/client-bry/coverage
+/client-bry/libpeerconnection.log
+/client-bry/testem.log
+/client-bry/typings
+
+# System files
+/client-bry/.DS_Store
+Thumbs.db
