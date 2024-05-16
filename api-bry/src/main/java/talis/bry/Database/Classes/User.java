@@ -37,14 +37,6 @@ public class User {
         return jsonObject;
     }
 
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setAnonymizedCpf(String anonymizedCpf) {
-        this.anonymizedCpf = anonymizedCpf;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
