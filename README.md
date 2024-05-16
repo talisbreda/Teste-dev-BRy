@@ -1,1 +1,1 @@
-# Teste-dev-BRy
+Esse repositório contém a API e o Cliente web para o teste de Desenvolvedor de Software da BRy.
