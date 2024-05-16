@@ -20,8 +20,12 @@ import java.util.Objects;
 @Component
 public class ImageManager {
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public ImageManager(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public long storeImageAndGetOID(String base64Image) throws SQLException, IOException {
         byte[] photoBytes = Base64.getDecoder().decode(base64Image.split(",")[1]);

@@ -21,14 +21,20 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final UserService userService;
+    private final ImageManager imageManager;
 
     @Autowired
-    private UserInsertionService userInsertionService;
-
-    @Autowired
-    private ImageManager imageManager;
+    public UserController(
+            UserRepository userRepository,
+            UserService userService,
+            ImageManager imageManager,
+            @Qualifier("taskExecutor") ThreadPoolTaskExecutor taskExecutor) {
+        this.userRepository = userRepository;
+        this.userService = userService;
+        this.imageManager = imageManager;
+    }
 
     @GetMapping("/users")
     public ResponseEntity<String> getUsers() {
