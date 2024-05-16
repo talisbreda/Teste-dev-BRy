@@ -1,0 +1,37 @@
+<div class="wrapper">
+  <div class="card">
+    <h2>{{ titleText }}</h2>
+    <div class="input-wrapper photo-input-wrapper">
+      <img [src]="user.photo" alt="image" />
+      <input type="file" class="photo-input" (change)="onFileSelected($event)" *ngIf="editing" />
+    </div>
+    <div class="input-wrapper">
+      <label for="name">Name</label>
+      <input type="text" class="name-input" [value]="user.name" disabled />
+    </div>
+    <div class="input-wrapper">
+      <label for="cpf">CPF</label>
+      <input type="text" class="cpf-input" [value]="user.cpf" disabled />
+    </div>
+    <div class="edit-buttons-wrapper">
+      <app-custom-button (click)="updateUser()" text="Confirm update" *ngIf="editing"/>
+      <app-custom-button (click)="cancelUpdate()" text="Cancel" color="firebrick" *ngIf="editing"/>
+    </div>
+
+    <p class="feedback-message"></p>
+    <div class="buttons-row">
+      <app-custom-button class="default-button" (click)="goBack()" text="Back" *ngIf="!editing"/>
+      <app-custom-button class="default-button" (click)="startUpdate()" text="Edit" *ngIf="!editing"/>
+      <app-custom-button class="default-button" (click)="askDelete()" text="Delete" color="firebrick" *ngIf="!editing"/>
+    </div>
+    <div class="opaque-bg" *ngIf="confirmDelete">
+      <div class="delete-alert">
+        <p>Are you sure you want to delete this user?</p>
+        <div class="buttons-row">
+          <app-custom-button class="default-button" (click)="deleteUser()" text="Yes"/>
+          <app-custom-button class="default-button" (click)="cancelDelete()" text="No" color="firebrick"/>
+        </div>
+    </div>
+    </div>
+  </div>
+</div>

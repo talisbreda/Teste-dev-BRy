@@ -1,0 +1,26 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 12vh;
+  background-color: cadetblue;
+}
+
+.navbar {
+  display: flex;
+  width: 60%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.option {
+  font-size: 30px;
+  background-color: antiquewhite;
+  width: 40%;
+  height: 100%;
+  padding: 10px;
+  text-align: center;
+  border-radius: 20px;
+  cursor: pointer;
+}

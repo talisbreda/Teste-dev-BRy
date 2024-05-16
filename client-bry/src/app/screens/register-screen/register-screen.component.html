@@ -1,0 +1,28 @@
+<div class="wrapper">
+  <div class="card">
+    <h2>Register a person</h2>
+
+    <div class="input">
+      <label for="name">Enter the name</label>
+      <input type="text" id="name-input" placeholder="Enter the name" (blur)="onBlur('name')" />
+    </div>
+
+    <div class="input">
+      <label for="cpf">Enter the CPF</label>
+      <input type="text" id="cpf-input" appCpfFormatter placeholder="___.___.___-__" (blur)="onBlur('cpf')" />
+    </div>
+
+    <div class="input photo-input">
+      <label for="">Upload a photo</label>
+      <input type="file" id="photo-input" (change)="onFileSelected($event)" />
+    </div>
+    <div id="image-wrapper">
+      <img [src]="base64file" />
+    </div>
+
+    <div class="submit-button-wrapper">
+      <app-custom-button (click)="onSave()" text="Register" />
+      <p class="return-message"></p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="wrapper">
+  <div class="search-bar-wrapper">
+    <input
+      type="search"
+      class="search-bar"
+      placeholder="Search user by name or original CPF"
+      [(ngModel)]="searchText"
+      (keyup.enter)="searchUser()"
+      (ngModelChange)="searchLocally()">
+    <button class="search-button" (click)="searchUser()">Search</button>
+  </div>
+  <div class="line">
+    <div class="column index-column"><p>Nº</p></div>
+    <div class="column name-column"><p>Name</p></div>
+    <div class="column cpf-column"><p>CPF</p></div>
+  </div>
+  <div class="line" *ngFor="let user of filteredUsers; let i = index" (click)="detailUser(user.id)">
+    <div class="column index-column"><p>{{ i+1 }}</p></div>
+    <div class="column name-column"><p>{{ user.name }}</p></div>
+    <div class="column cpf-column">{{ user.cpf }}</div>
+  </div>
+  <div class="search-results" *ngIf="searching">
+    <p>{{ searchResult }}</p>
+  </div>
+</div>
